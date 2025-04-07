@@ -1,0 +1,85 @@
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+
+# .NET (if using C# or Azure Functions)
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+terraform.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Azure CLI
+.azure/
+
+# Azure Functions
+.local.settings.json
+
+# Python virtual environments
+venv/
+env/
+ENV/
+.venv/
+pip-wheel-metadata/
+
+# IDEs
+.idea/
+*.iml
+
+# Package locks (optional, depending on how you want to handle reproducibility)
+# Uncomment if you want to ignore lock files
+# package-lock.json
+# yarn.lock
+# Pipfile.lock
+
+# SQL dump files
+*.sql
+*.sqlite
+*.db
+*.bak
+*.backup
+
+# Large data files to ignore
+Data/trips.csv
+Data/payments.csv
+Data/datasets.zip
