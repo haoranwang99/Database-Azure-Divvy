@@ -1,93 +1,68 @@
-# 🚴‍♂️ Divvy Bike Data Warehouse Project (Azure Synapse Analytics)
+# 🚴 Divvy Bike Data Warehouse with Microsoft Azure
 
-This project leverages **Azure Synapse Analytics** to build a cloud-based **data warehouse** solution using data from the **Divvy bike-sharing program** in Chicago, Illinois, USA.
-
-## 📊 Project Overview
-
-Divvy is a popular bike-sharing system in Chicago. Riders can purchase passes and unlock bikes at various stations using kiosks or a mobile app. The anonymized trip data is publicly available and serves as the foundation for this project.
-
-To simulate a production environment, the dataset has been enhanced with **mock account, rider, and payment information**. The primary goal is to **analyze ridership behavior and payment patterns** through the construction of a data warehouse solution.
+This project demonstrates how to build a complete cloud-based data warehouse solution using Microsoft Azure tools to analyze data from the **Divvy bike-sharing program** in Chicago. The workflow includes setting up an OLTP-like PostgreSQL environment, extracting and transforming data using Azure Synapse Analytics, and designing a star schema for optimized analysis.
 
 ---
 
-## 🧠 Business Objectives
+## 📦 Project Overview
 
-The data warehouse is designed to support the following business outcomes:
-
-### 🚴‍♀️ Ride Duration Analysis
-- By **date/time** (day of week, time of day)
-- By **starting and ending station**
-- By **rider age** at time of ride
-- By **membership type** (member or casual)
-
-### 💳 Revenue Analysis
-- By **month, quarter, year**
-- By **member** and their **age at account start**
-
-### 📈 Advanced Member Spending Analysis
-- Analyze **spending per member** based on:
-  - Average number of rides per month
-  - Average ride duration per month
+The goal of this project is to analyze Divvy’s ridership patterns and revenue behavior using both real and fabricated datasets. We simulate a production OLTP system in **Azure PostgreSQL**, extract the data into **Azure Blob Storage**, and transform it into a **star schema** within **Azure Synapse Analytics** using serverless SQL pools. From there, the model supports advanced analytical queries based on ride time, user demographics, station usage, and payment patterns.
 
 ---
 
-## 📐 Star Schema Design
+## 🗂️ Data Details
 
-To effectively analyze the Divvy bike-sharing data, a star schema was designed based on the relational data tables. This schema facilitates efficient querying and reporting by organizing data into fact and dimension tables.
+The data used in this project includes:
+- **Trip Data** (real): Information on bike trips including start and end times and station IDs.
+- **Account Data** (mock): Simulated account information including membership type and signup dates.
+- **Rider Data** (mock): Demographic details like birth year and gender.
+- **Payment Data** (mock): Simulated revenue data including amount and payment dates.
+
+These datasets are uploaded into PostgreSQL and later extracted into Blob Storage for staging and processing in Synapse.
+
+---
+
+## 🧱 Data Schema Design
+
+We begin with a normalized relational model in PostgreSQL, which reflects a real-time transactional system. To enable analytical querying, the data is restructured into a **star schema** in Synapse with the following structure:
 
 ### Relational Schema
-
-The initial relational schema outlines the structure of the source data tables and their relationships. This schema serves as the foundation for the star schema design.
 
 ![Relational Schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/relational-schema.png)
 
 ### Star Schema
 
-The star schema restructures the relational data into a central fact table surrounded by dimension tables, optimizing it for analytical queries.
-
 ![Star Schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/star-schemas.png)
 
-For a detailed explanation of the rationale behind using two fact tables, refer to the [Two Fact Tables Justification](https://github.com/haoranwang99/Database-Azure-Divvy/blob/main/re-modelling/Two_Fact_Tables_Justification.pdf) document.
+The design includes two **fact tables** (trip and payment) and multiple **dimension tables** (rider, account, station, date). This setup enhances querying flexibility for KPIs such as average ride time, trip frequency by age group, and revenue per user segment.
+
+👉 [Justification for Two Fact Tables](https://github.com/haoranwang99/Database-Azure-Divvy/blob/main/re-modelling/Two_Fact_Tables_Justification.pdf)
 
 ---
 
-## 🧭 Implementation Workflow
+## 🔄 Project Workflow
 
-This project follows a structured data engineering pipeline:
-
-### 1. Cloud Resource Provisioning
-- Deploy an **Azure Database for PostgreSQL** to simulate OLTP data sources.
-- Create an **Azure Synapse Analytics Workspace** using the built-in **serverless SQL pool**.
-- Set up **Azure Blob Storage** for data staging and transformation.
-
-### 2. Data Ingestion & Simulation
-- Execute the `ProjectDataToPostgres.py` script to:
-  - Generate tables and populate data in PostgreSQL.
-  - Verify using database tools like `pgAdmin`.
-
-### 3. Data Extraction
-- Use **Synapse Ingest Wizard** to extract data from PostgreSQL into **Azure Blob Storage** as raw text files.
-
-### 4. Staging & External Tables
-- Load the ingested files from Blob Storage into **external staging tables** using Synapse serverless SQL pool.
-
-### 5. Data Transformation & Modeling
-- Design and implement a **star schema** with dimension and fact tables.
-- Use **CETAS (CREATE EXTERNAL TABLE AS SELECT)** to transform and materialize data.
-
-### 6. Analytics & Insights
-- Query the star schema to support business objectives and derive actionable insights for ridership and revenue trends.
+1. **Data Simulation & Loading**
+   - Load all four datasets into **Azure PostgreSQL** using a Python ETL script.
+2. **Data Extraction**
+   - Extract data into **Azure Blob Storage** using Synapse’s ingestion tools.
+3. **Data Staging**
+   - Load flat files into **external staging tables** using serverless SQL pools.
+4. **Data Modeling**
+   - Transform raw data into **fact and dimension tables** using CETAS.
+5. **Analytics & Visualization**
+   - Use SQL queries for analytical insights into ride behavior and spending.
 
 ---
 
-## 🛠️ Technologies Used
+## 💻 Technologies Used
 
-- **Azure Synapse Analytics**
+- **Azure PostgreSQL**
 - **Azure Blob Storage**
-- **Azure Database for PostgreSQL**
-- **Python** (ETL script)
-- **SQL** (for transformations and querying)
-- **pgAdmin** (for PostgreSQL access)
+- **Azure Synapse Analytics**
+- **Python (ETL)**
+- **SQL (CETAS, star schema transformation)**
+- **pgAdmin** for PostgreSQL exploration
 
 ---
 
@@ -95,20 +70,12 @@ This project follows a structured data engineering pipeline:
 
 ```
 📂 Database-Azure-Divvy
-├── ProjectDataToPostgres.py      # Python script to create and upload PostgreSQL data
-├── re-modelling/                 # Star schema and relational model diagrams
-├── SQL/                          # Folder for SQL scripts (transformation, staging, etc.)
-└── README.md                     # You're reading it!
+├── ProjectDataToPostgres.py      # Python script to simulate OLTP loading
+├── re-modelling/                 # Star and relational schema diagrams
+├── SQL/                          # All SQL scripts for transformation
+├── project.ipynb                 # Final project notebook
+└── README.md                     # Project overview and instructions
 ```
-
----
-
-## 🚧 Status
-
-🔧 Project is in progress – stay tuned for:
-- Star schema implementation
-- SQL transformation scripts
-- Final analytics outputs and reports
 
 ---
 
@@ -121,4 +88,4 @@ This project follows a structured data engineering pipeline:
 
 ## 📜 License
 
-MIT License – feel free to fork and build upon this project!
+MIT License – open for use, collaboration, and exploration.
