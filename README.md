@@ -28,15 +28,15 @@ We begin with a normalized relational model in PostgreSQL, which reflects a real
 
 ### Relational Schema
 
-![Relational Schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/relational-schema.png)
+![Original Data Schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/Original Data Schema.png)
 
 ### Star Schema
 
-![Star Schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/star-schemas.png)
+![star schema](https://raw.githubusercontent.com/haoranwang99/Database-Azure-Divvy/main/re-modelling/star schema.png)
 
 The design includes two **fact tables** (trip and payment) and multiple **dimension tables** (rider, account, station, date). This setup enhances querying flexibility for KPIs such as average ride time, trip frequency by age group, and revenue per user segment.
 
-👉 [Justification for Two Fact Tables](https://github.com/haoranwang99/Database-Azure-Divvy/blob/main/re-modelling/Two_Fact_Tables_Justification.pdf)
+👉 [Star_Schema_Justification](https://github.com/haoranwang99/Database-Azure-Divvy/blob/main/re-modelling/Star_Schema_Justification.pdf)
 
 ---
 
